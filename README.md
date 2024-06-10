@@ -1,1 +1,1 @@
-Datamining in CSD
+Datamining in Cambridge Structural Database (CSD)
