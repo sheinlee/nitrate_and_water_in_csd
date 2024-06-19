@@ -1,4 +1,4 @@
-#find Ln complex with at least 1 organic ligand in first coordination shell
+#find ratio of nitrate/water in first coordination shell in subset2n_w
 
 import os
 from ccdc.io import MoleculeReader
@@ -99,57 +99,6 @@ def find_nitrate_and_water(ELEMENT,filepath,A,B,writerB):
                 if find_ELEMENT: break
             if find_ELEMENT: break
 
-        # #only focus on complex contain organic ligand/ligands
-        # if mol_is_organic:
-        #     CN_values_organic.append(CN)
-        #     if monodentate_nitrate>0 and bidentate_nitrate>0 :count_mixed_no3+=1
-        #     if monodentate_nitrate==0 and bidentate_nitrate>0:count_all_bi_no3+=1
-                
-        #     if monodentate_nitrate+bidentate_nitrate>0: 
-        #         count_total_no3+=1
-        #         CN_values_total_no3.append(CN)
-        #     if h2o>0:
-        #         count_total_h2o+=1
-        #         CN_values_total_h2o.append(CN)
-            
-        #     if monodentate_nitrate+bidentate_nitrate>0 and h2o==0:
-        #         count_no3_no_h2o+=1
-        #         CN_values_no3_no_h2o.append(CN)
-        #     if monodentate_nitrate+bidentate_nitrate>0 and h2o>0:
-        #         count_no3_with_h2o+=1
-        #         CN_values_no3_with_h2o.append(CN)
-        #     if monodentate_nitrate+bidentate_nitrate==0 and h2o>0:
-        #         count_h2o_no_no3+=1
-        #         CN_values_h2o_no_no3.append(CN)
-
-        # if h2o>0 or oh>0:
-        #     with open('water/water_'+ELEMENT+'.txt','a') as f:
-        #         f.write(mol.identifier + '\n')
-
-        #     if mol_is_organic:         
-        #         with open('org_water/org_water_'+ELEMENT+'.txt','a') as f:
-        #             f.write(mol.identifier + '\n')
-                
-        #         if monodentate_nitrate+bidentate_nitrate==0:
-        #             with open('org_water_no_nitrate/org_water_no_nitrate_'+ELEMENT+'.txt','a') as f:
-        #                 f.write(mol.identifier + '\n')
-
-        #         if monodentate_nitrate+bidentate_nitrate>0:
-        #             with open('org_water_and_nitrate/org_water_and_nitrate_'+ELEMENT+'.txt','a') as f:
-        #                 f.write(mol.identifier + '\n')
-
-        # if monodentate_nitrate+bidentate_nitrate>0:
-        #     with open('nitrate/nitrate_'+ELEMENT+'.txt','a') as f:
-        #         f.write(mol.identifier + '\n')
-
-        #     if mol_is_organic:         
-        #         with open('org_nitrate/org_nitrate_'+ELEMENT+'.txt','a') as f:
-        #             f.write(mol.identifier + '\n')
-                
-        #         if h2o==0 and oh ==0:
-        #             with open('org_nitrate_no_water/org_nitrate_no_water_'+ELEMENT+'.txt','a') as f:
-        #                 f.write(mol.identifier + '\n')
-
 
         A[count,1] = CN                                     #CN distribution
         A[count,2] = h2o                                    #Number of water distribution
@@ -159,34 +108,6 @@ def find_nitrate_and_water(ELEMENT,filepath,A,B,writerB):
 
         ratio_values.append((bidentate_nitrate+monodentate_nitrate)/h2o)
     mol_reader.close()
-
-    #analysis of coordination number
-    # B[0,0] = np.mean(CN_values)     
-    # B[0,1] = np.std(CN_values)    
-    # B[1,0] = np.mean(CN_values_organic)     
-    # B[1,1] = np.std(CN_values_organic)
-
-    # B[3,0] = np.mean(CN_values_total_no3)     
-    # B[3,1] = np.std(CN_values_total_no3)    
-    # B[4,0] = np.mean(CN_values_total_h2o)     
-    # B[4,1] = np.std(CN_values_total_h2o)
-
-    # B[6,0] = np.mean(CN_values_no3_no_h2o)     
-    # B[6,1] = np.std(CN_values_no3_no_h2o)    
-    # B[7,0] = np.mean(CN_values_no3_with_h2o)     
-    # B[7,1] = np.std(CN_values_no3_with_h2o)    
-    # B[8,0] = np.mean(CN_values_h2o_no_no3)     
-    # B[8,1] = np.std(CN_values_h2o_no_no3)    
-
-    # B[0, 3] = count_mixed_no3
-    # B[1, 3] = count_all_bi_no3
-
-    # B[3, 3] = count_total_no3
-    # B[4, 3] = count_total_h2o
-
-    # B[6, 3] = count_no3_no_h2o
-    # B[7, 3] = count_no3_with_h2o
-    # B[8, 3] = count_h2o_no_no3
 
     B[0,0]= np.mean(ratio_values) 
     B[0,1] = np.std(ratio_values)  
@@ -215,13 +136,6 @@ def main():
     
     for ELEMENT in LIST_OF_ELEMENT:
         filepath = './org_water_and_nitrate/org_water_and_nitrate_'+ELEMENT+'.txt'
-    #     file_path_list = ['water/water_'+ELEMENT+'.txt','org_water/org_water_'+ELEMENT+'.txt','org_water_no_nitrate/org_water_no_nitrate_'+ELEMENT+'.txt',
-    #                 'org_water_and_nitrate/org_water_and_nitrate_'+ELEMENT+'.txt','nitrate/nitrate_'+ELEMENT+'.txt','org_nitrate/org_nitrate_'+ELEMENT+'.txt',
-    #                 'org_nitrate_no_water/org_nitrate_no_water_'+ELEMENT+'.txt']
-    #     for file_path in file_path_list:
-    #         # 如果同名文件存在，删除它
-    #         if os.path.exists(file_path):
-    #             os.remove(file_path)
 
         find_nitrate_and_water(ELEMENT,filepath,A,B,writerB)
 
