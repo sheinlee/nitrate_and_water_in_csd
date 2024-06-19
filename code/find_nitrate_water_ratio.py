@@ -23,24 +23,9 @@ def find_nitrate_and_water(ELEMENT,filepath,A,B,writerB):
     mol_reader = MoleculeReader(filepath, format='identifiers')
 
     CN_values = []
-    CN_values_organic = []
-    CN_values_total_no3 = []
-    CN_values_total_h2o = []
-    CN_values_no3_no_h2o = []
-    CN_values_no3_with_h2o = []
-    CN_values_h2o_no_no3 = []
 
     ratio_values = []
 
-    count_mixed_no3=0
-    count_all_bi_no3=0
-
-    count_total_no3=0
-    count_total_h2o=0
-
-    count_no3_no_h2o=0
-    count_no3_with_h2o=0
-    count_h2o_no_no3=0
     for mol in mol_reader:
         count += 1
         A[count, 0] = mol.identifier
