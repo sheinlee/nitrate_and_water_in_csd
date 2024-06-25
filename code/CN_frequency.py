@@ -6,7 +6,7 @@ from time import process_time
 
 
 def find_cn_frequency(ELEMENT,filepath,A,writerA):
-
+    mol_reader = MoleculeReader(filepath, format='identifiers')
 
 def main():
     start = process_time()
