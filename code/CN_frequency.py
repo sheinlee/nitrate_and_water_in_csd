@@ -12,7 +12,7 @@ def find_cn_frequency(ELEMENT, filepath, A, writerA):
     count = 0
     for mol in mol_reader:
         count += 1
-        A[count, 0] = mol.identifier
+        # A[count, 0] = mol.identifier
 
         try:
             mol.assign_bond_types()
@@ -41,7 +41,7 @@ def find_cn_frequency(ELEMENT, filepath, A, writerA):
     freq_df.to_excel(writerA, sheet_name=ELEMENT, index=False)
 
     # Write the additional data A to the Excel file
-    pd.DataFrame(A).to_excel(writerA, sheet_name=f'{ELEMENT}_Data', float_format='%.5f')
+    # pd.DataFrame(A).to_excel(writerA, sheet_name=f'{ELEMENT}_Data', float_format='%.5f')
 
     return cn_counter
 
@@ -62,7 +62,7 @@ def main():
     for key_word in key_word_list:
         writerA = pd.ExcelWriter(f'analysis_CN_frequency_{key_word}.xlsx')
         for ELEMENT in LIST_OF_ELEMENT:
-            file_path = f'../data/{key_word}/{key_word}_{ELEMENT}.txt'
+            file_path = f'data/{key_word}/{key_word}_{ELEMENT}.txt'
             A = np.zeros(shape=(30, 4), dtype=object)
             cn_frequency = find_cn_frequency(ELEMENT, file_path, A, writerA)
         writerA.save()
