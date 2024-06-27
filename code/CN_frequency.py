@@ -6,8 +6,9 @@ from collections import Counter
 from time import process_time
 
 
-def find_cn_frequency(ELEMENT, filepath, A, writerA):
-    mol_reader = MoleculeReader(filepath, format='identifiers')
+def find_cn_frequency(ELEMENT, key_word,writerA):
+    file_path = f'data/{key_word}/{key_word}_{ELEMENT}.txt'
+    mol_reader = MoleculeReader(file_path, format='identifiers')
     CN_values = []
     count = 0
     for mol in mol_reader:
@@ -49,22 +50,23 @@ def find_cn_frequency(ELEMENT, filepath, A, writerA):
 def main():
     start = process_time()
     LIST_OF_ELEMENT = [
-        'La', 'Ce','Pr','Nd','Sm','Eu','Gd','Tb','Dy','Ho','Er','Tm','Yb','Lu'
+        'La', 
+        # 'Ce','Pr','Nd','Sm','Eu','Gd','Tb','Dy','Ho','Er','Tm','Yb','Lu'
     ]
-    folder_path_list = ['water', 'nitrate', 'org_water', 'org_nitrate', 'org_nitrate_no_water', 'org_water_and_nitrate', 'org_water_no_nitrate']
+    # folder_path_list = ['water', 'nitrate', 'org_water', 'org_nitrate', 'org_nitrate_no_water', 'org_water_and_nitrate', 'org_water_no_nitrate']
     key_word_list = ['water', 'nitrate', 'org_water', 'org_nitrate', 'org_nitrate_no_water', 'org_water_and_nitrate', 'org_water_no_nitrate']
 
-    for folder_path in folder_path_list:
-        # 如果文件夹不存在，创建它
-        if not os.path.exists(folder_path):
-            os.makedirs(folder_path)
+    # for folder_path in folder_path_list:
+    #     # 如果文件夹不存在，创建它
+    #     if not os.path.exists(folder_path):
+    #         os.makedirs(folder_path)
 
     for key_word in key_word_list:
         writerA = pd.ExcelWriter(f'analysis_CN_frequency_{key_word}.xlsx')
         for ELEMENT in LIST_OF_ELEMENT:
-            file_path = f'data/{key_word}/{key_word}_{ELEMENT}.txt'
+            
             A = np.zeros(shape=(30, 4), dtype=object)
-            cn_frequency = find_cn_frequency(ELEMENT, file_path, A, writerA)
+            cn_frequency = find_cn_frequency(ELEMENT, key_word,writerA)
         writerA.save()
 
     # processing time
