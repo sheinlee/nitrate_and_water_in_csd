@@ -1,20 +1,21 @@
-#find net charge of first shell(component with Ln) 
+#find net charge of first shell(component with Ln)  and frequency
 
 import os
 from ccdc.io import MoleculeReader
 import numpy as np
 import pandas as pd
 from time import process_time
+from collections import Counter
 
-
-def find_non_neutral_fs(ELEMENT,key,B,writerB):
+def find_non_neutral_fs(ELEMENT, key, B, writerB):
     count = -1
-    filepath = f'./{key}/{key}_' + ELEMENT + '.txt'
+    filepath = f'data/{key}/{key}_' + ELEMENT + '.txt'
     mol_reader = MoleculeReader(filepath, format='identifiers')
     count_neutral_fs = 0
     count_non_neutral_fs = 0  
-    NC_values = []  #NET CHARGE
-    NC_values_in_non_neutral= []
+    NC_values = []  # NET CHARGE
+    NC_values_in_non_neutral = []
+    
     for mol in mol_reader:
         count += 1
         B[count, 0] = mol.identifier
@@ -27,35 +28,42 @@ def find_non_neutral_fs(ELEMENT,key,B,writerB):
             continue
 
         find_ELEMENT = False
-        # mol_is_organic = False
         for com in mol.components:
             for atom in com.atoms:
                 if atom.atomic_symbol == ELEMENT:
                     find_ELEMENT = True
                     NC = com.formal_charge
-                    B[count,1] = com.formal_charge
+                    B[count, 1] = com.formal_charge
                     NC_values.append(NC)
                     if com.formal_charge == 0: 
-                        count_neutral_fs +=1
-                        with open(f'neutral_fs_{key}/neutral_fs_{key}_'+ELEMENT+'.txt','a') as f:
+                        count_neutral_fs += 1
+                        with open(f'data/neutral_fs_{key}/neutral_fs_{key}_' + ELEMENT + '.txt', 'a') as f:
                             f.write(mol.identifier + '\n')
-                    if com.formal_charge !=0: 
-                        count_non_neutral_fs +=1
+                    if com.formal_charge != 0: 
+                        count_non_neutral_fs += 1
                         NC_values_in_non_neutral.append(NC)
-                        with open(f'non_neutral_fs_{key}/non_neutral_fs_{key}_'+ELEMENT+'.txt','a') as f:
+                        with open(f'data/non_neutral_fs_{key}/non_neutral_fs_{key}_' + ELEMENT + '.txt', 'a') as f:
                             f.write(mol.identifier + '\n')
-                if find_ELEMENT:break
-            if find_ELEMENT: break
+                if find_ELEMENT:
+                    break
+            if find_ELEMENT:
+                break
 
-    B[0,3]=count_neutral_fs
-    B[0,4]=count_non_neutral_fs
-    B[0,6] = np.mean(NC_values)
-    B[0,7] = np.std(NC_values)
-    B[0,8] = np.mean(NC_values_in_non_neutral)
-    B[0,9] = np.std(NC_values_in_non_neutral)    
+    B[0, 3] = count_neutral_fs
+    B[0, 4] = count_non_neutral_fs
+    B[0, 6] = np.mean(NC_values)
+    B[0, 7] = np.std(NC_values)
+    B[0, 8] = np.mean(NC_values_in_non_neutral)
+    B[0, 9] = np.std(NC_values_in_non_neutral)    
 
+    # 频率分析
+    counter = Counter(NC_values_in_non_neutral)
+    freq_analysis = pd.DataFrame(counter.items(), columns=['NC_value', 'Frequency'])
+    
 
-    pd.DataFrame(B).to_excel(writerB, sheet_name=ELEMENT, float_format='%.5f') 
+    freq_analysis.to_excel(writerB, sheet_name=f'{ELEMENT}_frequency', index=False)
+    pd.DataFrame(B).to_excel(writerB, sheet_name=ELEMENT, float_format='%.5f')
+
 
 
 
@@ -68,7 +76,7 @@ def main():
     key1 = 'nitrate'
     key2 = 'water'
     
-    folder_path_list = ['non_neutral_fs_nitrate','non_neutral_fs_water','neutral_fs_nitrate','neutral_fs_water']
+    folder_path_list = ['data/non_neutral_fs_nitrate','data/non_neutral_fs_water','data/neutral_fs_nitrate','data/neutral_fs_water']
     for folder_path in folder_path_list:
         # 如果文件夹不存在，创建它
         if not os.path.exists(folder_path):
@@ -89,10 +97,10 @@ def main():
         key2 = 'water'
         # filepath1 = './nitrate/nitrate_' + ELEMENT + '.txt'
         # filepath2 = './water/water_' + ELEMENT + '.txt'
-        file_path_list = ['non_neutral_fs_nitrate/non_neutral_fs_nitrate_'+ELEMENT+'.txt',
-        'non_neutral_fs_water/non_neutral_fs_water_'+ELEMENT+'.txt',
-        'neutral_fs_nitrate/neutral_fs_nitrate_'+ELEMENT+'.txt',
-        'neutral_fs_water/neutral_fs_water_'+ELEMENT+'.txt']
+        file_path_list = ['data/non_neutral_fs_nitrate/non_neutral_fs_nitrate_'+ELEMENT+'.txt',
+        'data/non_neutral_fs_water/non_neutral_fs_water_'+ELEMENT+'.txt',
+        'data/neutral_fs_nitrate/neutral_fs_nitrate_'+ELEMENT+'.txt',
+        'data/neutral_fs_water/neutral_fs_water_'+ELEMENT+'.txt']
         for file_path in file_path_list:
             # 如果同名文件存在，删除它
             if os.path.exists(file_path):
