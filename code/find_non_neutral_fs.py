@@ -75,47 +75,55 @@ def main():
                         ]
     key1 = 'nitrate'
     key2 = 'water'
-    
-    folder_path_list = ['data/non_neutral_fs_nitrate','data/non_neutral_fs_water','data/neutral_fs_nitrate','data/neutral_fs_water']
+    key3 = 'org_water_and_nitrate'
+
+    folder_path_list = [f'data/non_neutral_fs_{key3}',f'data/neutral_fs_{key3}']
     for folder_path in folder_path_list:
         # 如果文件夹不存在，创建它
         if not os.path.exists(folder_path):
             os.makedirs(folder_path)
 
     # writerA = pd.ExcelWriter('non_neutral_fs_nitrate.xlsx')
-    writerB = pd.ExcelWriter('analysis_non_neutral_fs_nitrate.xlsx')
+    # writerB = pd.ExcelWriter('analysis_non_neutral_fs_nitrate.xlsx')
     # writerC = pd.ExcelWriter('non_neutral_fs_water.xlsx')
-    writerD = pd.ExcelWriter('analysis_non_neutral_fs_water.xlsx')
-    # A = np.zeros(shape=(1300, 10), dtype=object)
-    B = np.zeros(shape=(1300, 10), dtype=object)  # count (non) neutral fs in nitrate
-    # C = np.zeros(shape=(1300, 10), dtype=object)
-    D = np.zeros(shape=(1300, 10), dtype=object)  # count (non) neutral fs in nitrate
-
+    # writerD = pd.ExcelWriter('analysis_non_neutral_fs_water.xlsx')
     
+    # A = np.zeros(shape=(1300, 10), dtype=object)
+    # B = np.zeros(shape=(1300, 10), dtype=object)  # count (non) neutral fs in nitrate
+    # C = np.zeros(shape=(1300, 10), dtype=object)
+    # D = np.zeros(shape=(1300, 10), dtype=object)  # count (non) neutral fs in nitrate
+
+    writerE = pd.ExcelWriter('analysis_non_neutral_fs_org_water_and_nitrate.xlsx')
+    E = np.zeros(shape=(1300, 10), dtype=object)  # count (non) neutral fs in nitrate
+
     for ELEMENT in LIST_OF_ELEMENT:
-        key1 = 'nitrate'
-        key2 = 'water'
+        # key1 = 'nitrate'
+        # key2 = 'water'
+        key3 = 'org_water_and_nitrate'
         # filepath1 = './nitrate/nitrate_' + ELEMENT + '.txt'
         # filepath2 = './water/water_' + ELEMENT + '.txt'
-        file_path_list = ['data/non_neutral_fs_nitrate/non_neutral_fs_nitrate_'+ELEMENT+'.txt',
-        'data/non_neutral_fs_water/non_neutral_fs_water_'+ELEMENT+'.txt',
-        'data/neutral_fs_nitrate/neutral_fs_nitrate_'+ELEMENT+'.txt',
-        'data/neutral_fs_water/neutral_fs_water_'+ELEMENT+'.txt']
-        for file_path in file_path_list:
-            # 如果同名文件存在，删除它
-            if os.path.exists(file_path):
-                os.remove(file_path)
+        # file_path_list = ['data/non_neutral_fs_nitrate/non_neutral_fs_nitrate_'+ELEMENT+'.txt',
+        # 'data/non_neutral_fs_water/non_neutral_fs_water_'+ELEMENT+'.txt',
+        # 'data/neutral_fs_nitrate/neutral_fs_nitrate_'+ELEMENT+'.txt',
+        # 'data/neutral_fs_water/neutral_fs_water_'+ELEMENT+'.txt']
+        # for file_path in file_path_list:
+        #     # 如果同名文件存在，删除它
+        #     if os.path.exists(file_path):
+        #         os.remove(file_path)
 
         # find_non_neutral_fs(ELEMENT,filepath1,A,B,writerA,writerB)
         # find_non_neutral_fs(ELEMENT,filepath1,C,D,writerA,writerB)
-        find_non_neutral_fs(ELEMENT,key1,B,writerB)
-        find_non_neutral_fs(ELEMENT,key2,D,writerD)
+        # find_non_neutral_fs(ELEMENT,key1,B,writerB)
+        # find_non_neutral_fs(ELEMENT,key2,D,writerD)
+        find_non_neutral_fs(ELEMENT,key3,E,writerE)
 
     # writerA.save()
-    writerB.save()
+    # writerB.save()
     
     # writerC.save()
-    writerD.save()
+    # writerD.save()
+
+    writerE.save()
     #processing time
     end = process_time()
     print('Running time: %s Seconds' % (end - start))
