@@ -28,11 +28,11 @@ def Count_Metal(molecule):
 # mol_name=mol_reader.molecule('AQAKIN')
 
 
-ELEMENT='La'
+ELEMENT='Dy'
 countb_is_mono=False
 cry_reader=CrystalReader('csd')
 csd_reader=io.EntryReader('csd')
-cry_name=cry_reader.crystal('NELTEE')
+cry_name=cry_reader.crystal('UPEMOU')
 # entry_name=csd_reader.entry(cry_name)
 # if entry_name.has_3d_structure : print('no 3D structure')
 
