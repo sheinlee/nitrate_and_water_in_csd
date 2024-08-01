@@ -41,9 +41,11 @@ def is_mono(ELEMENT,cry_name):
         if Count_Ln(asy_cry_name,ELEMENT)==1 and Count_Metal(asy_cry_name) == 1:
             countb_is_mono=True
     else:
+        
         for com1 in asy_cry_name.components:
-            if Count_Metal(com1)==1 and Count_Ln(com1,ELEMENT)==1:
+            if Count_Metal(com1) == 1 and Count_Ln(com1,ELEMENT) == 1:
                 countb_is_mono=True
+                
 
 
 
