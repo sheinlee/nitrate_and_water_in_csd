@@ -25,7 +25,10 @@ def distance_calculation(ln_coordinates_list, N_coordinates_list):
             N_y = Ncrd.y
             N_z = Ncrd.z
             distance = math.sqrt((ln_x - N_x)**2 + (ln_y - N_y)**2 + (ln_z - N_z)**2)
-            distance_list.append(distance)
+
+            #condition distance between 4-15
+            if distance<=15:
+                distance_list.append(distance)
     return distance_list
 
 def nitrate_num_and_distance_in_ss(ELEMENT):
@@ -35,6 +38,7 @@ def nitrate_num_and_distance_in_ss(ELEMENT):
     lengths = [] 
     all_dis_lists = []
 
+    #record dist_list
     list_dis_lists = []
     
     for mol in mol_reader:
@@ -92,6 +96,8 @@ def main():
         all_lengths.extend(lengths)
         all_dis_lists.extend(dis_list)
         all_list_dis_lists.extend(list_dis_list)
+    
+    #test
     print(len(all_identifiers))
     print(len(all_dis_lists))
     print(len(all_lengths))
@@ -109,8 +115,8 @@ def main():
     })
     
     # Save to Excel
-    lengths_path = os.path.join(folder_path, 'lengths.xlsx')
-    dis_list_path = os.path.join(folder_path, 'distances.xlsx')
+    lengths_path = os.path.join(folder_path, 'lengths15.xlsx')
+    dis_list_path = os.path.join(folder_path, 'distances15.xlsx')
     
     lengths_df.to_excel(lengths_path, index=False)
     dis_list_df.to_excel(dis_list_path, index=False)
